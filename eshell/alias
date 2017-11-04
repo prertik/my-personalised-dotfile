@@ -1,0 +1,15 @@
+alias c curl $*
+alias be bundle exec $*
+alias emacs find-file $1
+alias sapti sudo apt-get install $*
+alias saptu sudo apt-get update $*
+alias sapts sudo apt-cache show $*
+alias saptse sudo apt-cache search $*
+alias s ls $*
+alias gsu git submodule update --init --recursive
+alias gst git status
+alias gco git checkout $*
+alias gbv git branch -v $*
+alias gb git branch $*
+alias g git $*
+alias f find $*

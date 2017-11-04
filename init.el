@@ -1,0 +1,371 @@
+;;; General personalization initially
+
+(package-initialize)
+
+(require 'cl)
+
+(load "~/.emacs.d/packages")
+
+(setq custom-file (expand-file-name "~/.emacs.d/custom.el")
+      ido-use-virtual-buffers t
+      org-default-notes-file "~/.emacs.d/.notes.org"
+      org-remember-default-headline 'bottom
+      org-completion-use-ido t
+      epa-armor t
+      load-prefer-newer t
+      visible-bell t
+      tls-checktrust 'ask
+      el-get-allow-insecure nil
+      inhibit-startup-message t
+      uniquify-buffer-name-style 'post-forward
+      browse-url-browser-function 'browse-url-firefox)
+
+(when window-system
+  (setq scroll-conservatively 1))
+
+;; For some reason, update-directory-autoloads *always* writes its
+;; paths as relative to user-emacs-directory, so we have to add
+;; this. If we add user-emacs-directory by itself to load-path, Emacs
+;; warns us that we shouldn't do that, so we trick it.
+(add-to-list 'load-path (concat user-emacs-directory "/prertik/../"))
+(load (concat user-emacs-directory "my-autoload.el") t)
+(load custom-file t)
+
+
+;; personal stuff
+(mapc 'load (directory-files (concat user-emacs-directory user-login-name)
+			     t "^[^#].*el$"))
+
+(setq custom-theme-load-path
+      (directory-files (concat user-emacs-directory "themes") t "^[^\.]"))
+
+(require 'find-file-in-project)
+(add-to-list 'ffip-patterns "*.lua")
+(add-to-list 'ffip-patterns "*.md")
+(add-to-list 'ffip-patterns "*.lisp")
+(add-to-list 'ffip-patterns "*.clj")
+(add-to-list 'ffip-patterns "*.cljs")
+(add-to-list 'ffip-patterns "*.cljc")
+(add-to-list 'ffip-patterns "*.lfe")
+(add-to-list 'ffip-patterns "*.edn")
+(add-to-list 'ffip-patterns "*.log")
+(add-to-list 'ffip-patterns "*.sh")
+(add-to-list 'ffip-patterns "*.sql")
+(add-to-list 'ffip-patterns "*.txt")
+(add-to-list 'ffip-patterns "*.yml")
+(add-to-list 'ffip-patterns "*.xml")
+(add-to-list 'ffip-patterns "*.json")
+(add-to-list 'ffip-patterns "Dockerfile")
+
+(when (require 'smex nil t)
+  (setq smex-save-file (concat user-emacs-directory ".smex-items"))
+  (smex-initialize)
+  (global-set-key (kbd "M-x") 'smex))
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+(column-number-mode t)
+
+(winner-mode)
+
+(eval-after-load 'markdown-mode
+  (progn (add-hook 'markdown-mode-hook 'flyspell-mode)
+	 (add-hook 'markdown-mode-hook 'auto-fill-mode)))
+
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'text-mode-hook 'auto-fill-mode)
+
+(defun uuid ()
+  (interactive)
+  (insert (shell-command-to-string "uuid -v 4")))
+
+;; why not?
+(eshell)
+;; graaaaaaah! eshell doesn't respect eval-after-load for some reason:
+(with-current-buffer "*eshell*" (setq pcomplete-cycle-completions nil))
+(set-face-foreground 'eshell-prompt "turquoise")
+(put 'upcase-region 'disabled nil)
+
+(custom-set-variables
+ '(custom-enabled-themes (quote (monokai))))
+
+(menu-bar-mode -1)
+
+(tool-bar-mode -1)
+
+(toggle-scroll-bar -1)
+
+(ido-ubiquitous-mode 1)
+
+(spaceline-all-the-icons-theme t)
+(spaceline-all-the-icons--setup-anzu)
+(spaceline-all-the-icons--setup-package-updates) ;; Enable package update indicator
+(spaceline-all-the-icons--setup-git-ahead)       ;; Enable # of commits ahead of upstream in git
+(spaceline-all-the-icons--setup-paradox)         ;; Enable Paradox mode line
+(spaceline-all-the-icons--setup-neotree)         ;; Enable Neotree mode line
+
+(yahoo-weather-mode 1)
+(fancy-battery-mode 1)
+(git-gutter-mode 1)
+(winum-mode 1)
+(projectile-mode 1)
+(flycheck-mode 1)
+(nyan-mode 1)
+(eyebrowse-mode 1)
+
+(spaceline-toggle-all-the-icons-battery-status-on)
+
+(spaceline-toggle-all-the-icons-bookmark-on) 	
+(spaceline-toggle-all-the-icons-buffer-id-on)	
+(spaceline-toggle-all-the-icons-buffer-path-on) 	
+(spaceline-toggle-all-the-icons-buffer-position-on) 	
+(spaceline-toggle-all-the-icons-buffer-size-on)	
+(spaceline-toggle-all-the-icons-dedicated-on) 	
+(spaceline-toggle-all-the-icons-eyebrowse-workspace-on) 	
+(spaceline-toggle-all-the-icons-flycheck-status-on) 	
+(spaceline-toggle-all-the-icons-flycheck-status-info-on) 	
+(spaceline-toggle-all-the-icons-fullscreen-on) 	
+(spaceline-toggle-all-the-icons-git-ahead-on) 	
+(spaceline-toggle-all-the-icons-git-status-on) 	
+(spaceline-toggle-all-the-icons-hud-on) 	
+(spaceline-toggle-all-the-icons-minor-modes-on) 	
+(spaceline-toggle-all-the-icons-mode-icon-on) 	
+(spaceline-toggle-all-the-icons-modified-on) 	
+(spaceline-toggle-all-the-icons-multiple-cursors-on)	
+(spaceline-toggle-all-the-icons-narrowed-on) 	
+(spaceline-toggle-all-the-icons-neotree-close-bracket-on) 	
+(spaceline-toggle-all-the-icons-neotree-context-on) 	
+(spaceline-toggle-all-the-icons-neotree-dirs-on) 	
+(spaceline-toggle-all-the-icons-neotree-files-on) 	
+(spaceline-toggle-all-the-icons-neotree-index-on) 	
+(spaceline-toggle-all-the-icons-neotree-open-bracket-on) 	
+(spaceline-toggle-all-the-icons-nyan-cat-on) 	
+(spaceline-toggle-all-the-icons-org-clock-current-task-on) 	
+(spaceline-toggle-all-the-icons-package-updates-on) 	
+(spaceline-toggle-all-the-icons-paradox-filter-on) 	
+(spaceline-toggle-all-the-icons-paradox-line-count-on) 	
+(spaceline-toggle-all-the-icons-paradox-status-installed-on) 	
+(spaceline-toggle-all-the-icons-paradox-status-new-on) 	
+(spaceline-toggle-all-the-icons-paradox-status-upgrade-on) 	
+(spaceline-toggle-all-the-icons-paradox-total-on) 	
+(spaceline-toggle-all-the-icons-position-on) 	
+(spaceline-toggle-all-the-icons-process-on) 	
+(spaceline-toggle-all-the-icons-projectile-on) 	
+(spaceline-toggle-all-the-icons-region-info-on) 	
+(spaceline-toggle-all-the-icons-separator-left-active-1-on) 	
+(spaceline-toggle-all-the-icons-separator-left-active-2-on) 	
+(spaceline-toggle-all-the-icons-separator-left-active-3-on)
+(spaceline-toggle-all-the-icons-separator-left-active-4-on)
+(spaceline-toggle-all-the-icons-separator-left-extra-1-on)
+(spaceline-toggle-all-the-icons-separator-left-extra-2-on)
+(spaceline-toggle-all-the-icons-separator-left-inactive-on)
+(spaceline-toggle-all-the-icons-separator-minor-mode-left-on)
+(spaceline-toggle-all-the-icons-separator-minor-mode-right-on)
+(spaceline-toggle-all-the-icons-separator-paradox-1-on)
+(spaceline-toggle-all-the-icons-separator-paradox-2-on)
+(spaceline-toggle-all-the-icons-separator-paradox-3-on)
+(spaceline-toggle-all-the-icons-separator-paradox-4-on)
+(spaceline-toggle-all-the-icons-separator-right-active-1-on)
+(spaceline-toggle-all-the-icons-separator-right-active-2-on)
+(spaceline-toggle-all-the-icons-separator-right-inactive-on)	
+(spaceline-toggle-all-the-icons-sunrise-on) 	
+(spaceline-toggle-all-the-icons-sunset-on) 	
+(spaceline-toggle-all-the-icons-temperature-on) 	
+(spaceline-toggle-all-the-icons-text-scale-on) 	
+(spaceline-toggle-all-the-icons-time-on) 	
+(spaceline-toggle-all-the-icons-vc-icon-on) 	
+(spaceline-toggle-all-the-icons-vc-status-on) 	
+(spaceline-toggle-all-the-icons-weather-on) 	
+(spaceline-toggle-all-the-icons-which-function-on) 	
+(spaceline-toggle-all-the-icons-window-number-on) 	
+
+(set-face-attribute 'default nil :height 130)
+
+;; Mitigate Bug#28350 (security) in Emacs 25.2 and earlier.
+(eval-after-load "enriched"
+  '(defun enriched-decode-display-prop (start end &optional param)
+     (list start end)))
+
+;; Work for Fira Code
+
+ ;; PRETTIFY SYMBOLS (with Pragmata Pro)
+  (defun setup-pragmata-ligatures ()
+    (setq prettify-symbols-alist
+          (append prettify-symbols-alist
+           '(("!!"   . ?)
+             ("!="   . ?)
+             ("!=="  . ?)
+             ("!≡"   . ?)
+             ("!≡≡"  . ?)
+             ("!>"   . ?)
+             ("#("   . ?)
+             ("#_"   . ?)
+             ("#{"   . ?)
+             ("#?"   . ?)
+             ("#>"   . ?)
+             ("%="   . ?)
+             ("%>"   . ?)
+             ("<~"   . ?)
+             ("&%"   . ?)
+             ("&&"   . ?)
+             ("&*"   . ?)
+             ("&+"   . ?)
+             ("&-"   . ?)
+             ("&/"   . ?)
+             ("&="   . ?)
+             ("&&&"  . ?)
+             ("&>"   . ?)
+             ("$>"   . ?)
+             ("~>"   . ?)
+             ;; ("***"  . ?) ; I prefer not to use this one
+             ("*="   . ?)
+             ("*/"   . ?)
+             ("*>"   . ?)
+             ("++"   . ?)
+             ("+++"  . ?)
+             ("+="   . ?)
+             ("+>"   . ?)
+             ("--"   . ?)
+             ("-<"   . ?)
+             ("-<<"  . ?)
+             ("-="   . ?)
+             ("->>"  . ?)
+             ("---"  . ?)
+             ("-->"  . ?)
+             (".."   . ?)
+             ("..."  . ?)
+             ("..<"  . ?)
+             (".>"   . ?)
+             (".~"   . ?)
+             (".="   . ?)
+             ("/*"   . ?)
+             ("//"   . ?)
+             ("/>"   . ?)
+             ("/="   . ?)
+             ("/=="  . ?)
+             ("///"  . ?)
+             ("/**"  . ?)
+             ("::"   . ?)
+             (":="   . ?)
+             (":≡"   . ?)
+             (":>"   . ?)
+             (":=>"  . ?)
+             ("<$>"  . ?)
+             ("<*"   . ?)
+             ("<*>"  . ?)
+             ("<+>"  . ?)
+             ;; ("<-"   . ?) ; I like different arrows (see below)
+             ("<<"   . ?)
+             ("<<<"  . ?)
+             ("<<="  . ?)
+             ("<="   . ?)
+             ;; ("<=>"  . ?) ; I like different arrows (see below)
+             ("<>"   . ?)
+             ("<|>"  . ?)
+             ("<<-"  . ?)
+             ("<|"   . ?)
+             ("<=<"  . ?)
+             ("<~~"  . ?)
+             ("<<~"  . ?)
+             ("<$"   . ?)
+             ("<+"   . ?)
+             ("<!>"  . ?)
+             ("<@>"  . ?)
+             ("<#>"  . ?)
+             ("<%>"  . ?)
+             ("<^>"  . ?)
+             ("<&>"  . ?)
+             ("<?>"  . ?)
+             ("<.>"  . ?)
+             ("</>"  . ?)
+             ("<\>"  . ?)
+             ("<\">" . ?)
+             ("<:>"  . ?)
+             ("<~>"  . ?)
+             ("<**>" . ?)
+             ("<<^"  . ?)
+             ("<!"   . ?)
+             ("<@"   . ?)
+             ("<#"   . ?)
+             ("<%"   . ?)
+             ("<^"   . ?)
+             ("<&"   . ?)
+             ("<?"   . ?)
+             ("<."   . ?)
+             ("</"   . ?)
+             ("<\\"  . ?)
+             ("<\""  . ?)
+             ("<:"   . ?)
+             ("<->"  . ?)
+             ("<!--" . ?)
+             ("<--"  . ?)
+             ("=<<"  . ?)
+             ("=="   . ?)
+             ("==="  . ?)
+             ;; ("==>"  . ?) ; I like different arrows (see below)
+             ;; ("=>"   . ?)  ; I like different arrows (see below)
+             ("=~"   . ?)
+             ("=>>"  . ?)
+             ("≡≡"   . ?)
+             ("≡≡≡"  . ?)
+             ("≡:≡"  . ?)
+             (">-"   . ?)
+             (">="   . ?)
+             (">>"   . ?)
+             (">>-"  . ?)
+             (">>="  . ?)
+             (">>>"  . ?)
+             (">=>"  . ?)
+             (">>^"  . ?)
+             ("??"   . ?)
+             ("?~"   . ?)
+             ("?="   . ?)
+             ("?>"   . ?)
+             ("^="   . ?)
+             ("^."   . ?)
+             ("^?"   . ?)
+             ("^.."  . ?)
+             ("^<<"  . ?)
+             ("^>>"  . ?)
+             ("^>"   . ?)
+             ("\\\\" . ?)
+             ("\\>"  . ?)
+             ("@>"   . ?)
+             ("|="   . ?)
+             ("||"   . ?)
+             ("|>"   . ?)
+             ("|||"  . ?)
+             ("|+|"  . ?)
+             ("~="   . ?)
+             ("~~>"  . ?)
+             ("~>>"  . ?)
+
+             ;; Personal preference: I like this set of arrows better than default
+             ("<-"   . ?🡐)
+             ("->"   . ?🡒)
+             ("=>"   . ?⇒)
+             ("<=>"  . ?⟺)
+             ("<==>" . ?⟺)
+             ("==>"  . ?⟹)
+             ("<=="  . ?⟸)
+             ("|->"  . ?⟼)
+             ("<-|"  . ?⟻)
+             ("|=>"  . ?⟾)
+             ("<=|"  . ?⟽)
+             ))))
+
+  (defun refresh-pretty ()
+    (prettify-symbols-mode -1)
+    (prettify-symbols-mode +1))
+
+  ;; Hooks for modes in which to install the Pragmata ligatures
+  (mapc (lambda (hook)
+          (add-hook hook (lambda () (setup-pragmata-ligatures) (refresh-pretty))))
+        '(text-mode-hook
+          prog-mode-hook))
+(global-prettify-symbols-mode +1)
+
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+
+
