@@ -46,6 +46,12 @@
   (set-face-foreground 'vertical-border "bright green")
   (set-face-background 'hl-line "black"))
 
+(defun lv ()
+  (interactive)
+  (load-theme 'leuven)
+  (set-face-background 'vertical-border "black")
+  (set-face-foreground 'vertical-border "black"))
+
 (eval-after-load 'hl-line
   '(set-face-background 'hl-line "darkseagreen2"))
 
