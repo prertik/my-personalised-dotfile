@@ -53,6 +53,7 @@
 	git-gutter
 	flycheck
 	fancy-battery
+	smartparens
 	))
 
 ;; activate all the packages

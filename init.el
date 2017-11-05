@@ -112,6 +112,7 @@
 (flycheck-mode 1)
 (nyan-mode 1)
 (eyebrowse-mode 1)
+(smartparens-global-mode 1)
 
 (spaceline-toggle-all-the-icons-battery-status-on)
 
